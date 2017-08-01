@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+  <input type="file" id="manifest" />
+  <br>
+  <pre id="result"></pre>
+  <script>
+    document.getElementById("manifest").addEventListener('change', function()
+    {
+      var fr = new FileReader();
+      fr.onload = function()
+      {
+        var lines = this.result.split('\n');
+        var line_len = lines.length;
+         for(var line = 0; line < line_len; line++){
+           console.log(lines[line]);
+         }
+      }
+      fr.readAsText(this.files[0]);
+    });
+  </script>
+</body>
+</html>
