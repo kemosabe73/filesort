@@ -12,6 +12,7 @@
       var fr = new FileReader();
       fr.onload = function()
       {
+        //the fucken regex for .class and.java files = /(\w+)+(?=\.java|\.class)+(?!.*(\w+)(\.\w+)+)/igm
         var lines = this.result.split('\n');
         var line_len = lines.length;
          for(var line = 0; line < line_len; line++){
