@@ -7,6 +7,20 @@
   <br>
   <pre id="result"></pre>
   <script>
+
+    function arrayContains(arr, value)
+    {
+      var arr_len = arr.length;
+      for(var i = 0; i < arr_len; i++)
+      {
+        if(arr[i] === val)
+        {
+          return true;
+        }
+      }
+      return false;
+    }
+
     document.getElementById("manifest").addEventListener('change', function()
     {
       var fr = new FileReader();
@@ -15,9 +29,49 @@
         //the fucken regex for .class and.java files = /(\w+)+(?=\.java|\.class)+(?!.*(\w+)(\.\w+)+)/igm
         var lines = this.result.split('\n');
         var line_len = lines.length;
-         for(var line = 0; line < line_len; line++){
-           console.log(lines[line]);
+        var result =
+        {
+          total_lines   : line_len,
+          similar_lines : []
+        };
+        var similar_str     = [];
+        var similar_ind     = [];
+        var regExJavaClass  = /(\w+)+(?=\.java|\.class)+(?!.*(\w+)(\.\w+)+)/igm;
+        var testString      = "";
+        var iString         = "";
+        var testAdded       = false;
+         for(var line = 0; line < line_len; line++)
+         {
+           testAdded  = false;
+           if(arrayContains(similar_ind, line) != true)
+           {
+             testString = regExJavaClass.exec(lines[line]);
+             if(testString != "")
+             {
+               for(var i = 0; i < line_len; i++)
+               {
+                 iString = regExJavaClass.exec(lines[i]);
+                 if(testString === iString)
+                 {
+                   if(testAdded === false)
+                   {
+                     similar_str.push(lines[line]);
+                     similar_str.push(lines[i]);
+                     similar_ind.push(line);
+                     similar_ind.push(i);
+                     testAdded = true;
+                   }
+                   else
+                   {
+                     similar_str.push(lines[i]);
+                     similar_ind.push(i);
+                   }
+                 }
+               }
+             }
+           }
          }
+         console.log(similar_str);
       }
       fr.readAsText(this.files[0]);
     });
